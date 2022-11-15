@@ -16,7 +16,7 @@ def mean(arr):
     
     return total / len(arr)
 
-def sd(arr):
+def sd(arr):                #Standard Deviation
     ans = 0
     m = mean(arr)
 
@@ -25,7 +25,7 @@ def sd(arr):
 
     return ans / len(arr)
 
-def srs(arr, n):
+def simple_random_sampling(arr, n):
     visited = []
 
     while(len(visited) < n and len(visited) < len(arr)):
@@ -34,7 +34,15 @@ def srs(arr, n):
         if (arr[i] not in visited):
             visited.append(arr[i])
 
-    return visited        
+    return visited
+
+def sample_size_single_mean(Za, S, d):
+    n = (Za * S / d) ** 2
+    return n
+
+def sample_size_two_mean(Za, Zb, s, m1, m2):
+    n = (2 * s * (Za + Zb) / (m1 - m2)) ** 2
+    return n        
 
 data = pd.read_csv("purged_csv_file.csv")
 index = data["index"].tolist()
@@ -50,3 +58,5 @@ gint = data["Global_intensity"].tolist()
 sub1 = data["Sub_metering_1"].tolist()
 sub2 = data["Sub_metering_2"].tolist()
 sub3 = data["Sub_metering_3"].tolist() 
+
+sd_dic = {'gap' : sd(gap), 'grp' : sd(grp), 'vol' : sd(vol), 'gint' : sd(gint), 'sub1' : sd(sub1), 'sub2' : sd(sub2), 'sub3' : sd(sub3)}
