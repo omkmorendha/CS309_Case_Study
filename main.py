@@ -54,6 +54,64 @@ def sample_size_two_mean(Za, Zb, s, m1, m2):
     n = (2 * s * (Za + Zb) / (m1 - m2)) ** 2
     return n
 
+def one_sample_z_test(sample, estimated_mean, z_tab):
+    sample_mean = mean(sample)
+    sample_sd = sd(sample)
+    sample_size = len(sample)
+    z_calc = abs(sample_mean - estimated_mean)/(sample_sd/sqrt(sample_size-1))
+    print(f"Z_calc = {z_calc} and Z_tab = {z_tab}")
+
+    if z_calc <= z_tab:
+        print("Null hypothesis is accepted")
+    else:
+        print("Null hypothesis is rejected")
+
+def two_sample_z_test(sample1, sample2, z_tab):
+    s1_mean = mean(sample1)
+    s2_mean = mean(sample2)
+
+    s1_sd = sd(sample1)
+    s2_sd = sd(sample2)
+
+    s1_size = len(sample1)
+    s2_size = len(sample2)
+
+    z_calc = abs(s1_mean-s2_mean)/sqrt(s1_sd**2/s1_size + s2_sd**2/ s2_size)
+
+    print(f"Z_cal = {z_calc} and Z_tab = {z_tab}")
+    if z_calc <= z_tab:
+        print("Null hypothesis accepted")
+    else:
+        print("Null hypothesis is rejected")
+
+def one_sample_t_test(sample, population_mean, t_tab):
+    sample_mean = mean(sample)
+    sample_sd = sd(sample)
+    sample_size = len(sample)
+    t_calc = abs(sample_mean - population_mean)/(sample_sd/sqrt(sample_size-1))
+    print(f"t_cal = {t_calc} and t_tab = {t_tab}")
+    if t_calc <= t_tab:
+        print("Accept Null hypothesis")
+    else:
+        print("Null hypothesis rejected")
+
+def two_sample_t_test(sample1, sample2, t_tab):
+    s1_mean = mean(sample1)
+    s2_mean = mean(sample2)
+
+    s1_sd = sd(sample1)
+    s2_sd = sd(sample2)
+
+    s1_size = len(sample1)
+    s2_size = len(sample2)
+
+    t_calc = abs(s1_mean-s2_mean)/(sqrt(s1_sd**2/s1_size + s2_sd**2/s2_size))
+    print(f"t_cal = {t_calc} and t_tab = {t_tab}")
+    if t_calc <= t_tab:
+        print("Accept Null hypothesis")
+    else:
+        print("Null hypothesis rejected")
+
 def rank_test(sample, tab_value):
     m = median(tuple(sample))
     i=0
