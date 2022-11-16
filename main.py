@@ -225,7 +225,7 @@ def signed_rank_test(before_sample, after_sample, tab_value):
     D = [d[0] - d[1] for d in zip(before_sample, after_sample)]
     _D_ = [abs(d) for d in D]
     rank = find_rank(_D_)
-    n = len(before)
+    n = len(before_sample)
     neg_count = pos_count = 0
     for d in D:
       if d < 0:
@@ -249,7 +249,33 @@ def signed_rank_test(before_sample, after_sample, tab_value):
         else:
             print("Reject Null Hypothesis")
         
+def goodness_of_fit(obs, exp, chi2_tab):
+    chi2_cal = 0
 
+    for i in range(0, len(obs)):
+        chi2_cal += ((obs[i] - exp[i]) ** 2) / exp[i]
+    
+    if(chi2_cal <= chi2_tab):
+        print("Accept Null Hypothesis")
+    else:
+        print("Reject Null Hypothesis")
+
+def chi_2_test_table(table, chi2_tab):
+    chi2_cal = 0
+    row_sum = [sum(i) for i in table]
+    col_sum = [sum(i) for i in zip(*table)]
+    N = sum(row_sum)
+
+    for row in range(len(table)):
+        for i in range(len(table[row])):
+            exp = row_sum[row] * col_sum[i] / N
+            chi2_cal += ((table[row][i] - exp) ** 2)/exp
+
+    if(chi2_cal <= chi2_tab):
+        print("Accept Null Hypothesis")
+    else:
+        print("Reject Null Hypothesis")
+    
 data = pd.read_csv("purged_csv_file.csv")
 index = data["index"].tolist()
 date = data["Date"].tolist()
@@ -266,9 +292,3 @@ sub2 = data["Sub_metering_2"].tolist()
 sub3 = data["Sub_metering_3"].tolist() 
 
 sd_dic = {'gap' : sd(gap), 'grp' : sd(grp), 'vol' : sd(vol), 'gint' : sd(gint), 'sub1' : sd(sub1), 'sub2' : sd(sub2), 'sub3' : sd(sub3)}
-
-s1 = [15,18,16,17,13,22,24,17,19,21,26,28]
-s2 = [14,9,16,19,10,12,11,8,15,18,25]
-before = [7, 2, 3, 6, 5, 8, 12]
-after = [5, 3, 4, 3, 1, 6, 3]
-signed_rank_test(before, after, 2)
