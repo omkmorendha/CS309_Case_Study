@@ -9,6 +9,9 @@
 import pandas as pd
 import random as rand
 from math import sqrt
+from scipy.stats import chi2
+from scipy.stats import norm
+from scipy.stats import t
 
 def mean(arr):
     total = 0
@@ -269,7 +272,8 @@ def chi_2_test_table(table, chi2_tab):
     for row in range(len(table)):
         for i in range(len(table[row])):
             exp = row_sum[row] * col_sum[i] / N
-            chi2_cal += ((table[row][i] - exp) ** 2)/exp
+            if (exp != 0):
+                chi2_cal += ((table[row][i] - exp) ** 2) / exp
 
     if(chi2_cal <= chi2_tab):
         print("Accept Null Hypothesis")
@@ -292,3 +296,28 @@ sub2 = data["Sub_metering_2"].tolist()
 sub3 = data["Sub_metering_3"].tolist() 
 
 sd_dic = {'gap' : sd(gap), 'grp' : sd(grp), 'vol' : sd(vol), 'gint' : sd(gint), 'sub1' : sd(sub1), 'sub2' : sd(sub2), 'sub3' : sd(sub3)}
+mean_dic = {'gap' : mean(gap), 'grp' : mean(grp), 'vol' : mean(vol), 'gint' : mean(gint), 'sub1' : mean(sub1), 'sub2' : mean(sub2), 'sub3' : mean(sub3)}
+
+# For Goodness of Fit test
+# n = len(gint)
+# exp = [mean(gint)] * n
+# chi2_tab = chi2.ppf(0.95, n)
+# goodness_of_fit(gint, exp, chi2_tab)
+
+# n = len(sub1)
+# chi2_tab = chi2.ppf(0.95, n)
+# table = [None, None, None]
+# table[0] = sub1
+# table[1] = sub2
+# table[2] = sub3
+# chi_2_test_table(table, chi2_tab)
+
+# z_tab = norm.ppf(1- .05/2)
+# n = sample_size_single_mean(z_tab, sd_dic["vol"], 5)
+# sample = simple_random_sampling(vol, n) 
+# one_sample_z_test(sample, 240, z_tab)
+
+n = 28
+t_tab = t.ppf(1 - .05/2, n)
+sample = simple_random_sampling(vol, n)
+one_sample_t_test(sample, 280, t_tab)
